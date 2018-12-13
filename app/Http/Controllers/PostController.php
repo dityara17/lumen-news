@@ -28,14 +28,16 @@ class PostController extends Controller
         $post->category_id = $request->category;
         $post->name = $request->name;
         //image insert
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $fullName = $image->getClientOriginalName();
-            $n = explode('.',$fullName)[0];
-            $name = $n."-".time().'.'.$image->getClientOriginalExtension();
-            $destinationPath = storage_path('app/images/');
-            $image->move($destinationPath, $name);
-            $post->image = $name;
+        if (!empty($request->image)){
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $fullName = $image->getClientOriginalName();
+                $n = explode('.',$fullName)[0];
+                $name = $n."-".time().'.'.$image->getClientOriginalExtension();
+                $destinationPath = storage_path('app/images/');
+                $image->move($destinationPath, $name);
+                $post->image = $name;
+            }
         }
         $post->desc = $request->description;
         $post->author = $request->author;

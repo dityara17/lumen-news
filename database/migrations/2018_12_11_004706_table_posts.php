@@ -16,7 +16,7 @@ class TablePosts extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->text('desc');
             $table->integer('author');
             $table->timestamps();
