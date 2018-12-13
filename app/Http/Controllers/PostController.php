@@ -11,19 +11,21 @@ namespace App\Http\Controllers;
 
 use App\Model\Post;
 use Illuminate\Http\Request;
+use Symfony\Component\Console\Helper\Helper;
 
 class PostController extends Controller
 {
 
     public function getPosts()
     {
-        return Post::orderBy('id', 'desc')->get();
+        return Post::orderBy('id', 'description')->get();
     }
 
     public function getPost($id)
     {
         return Post::findOrFail($id);
     }
+
 
     public function store(Request $request)
     {
@@ -42,23 +44,28 @@ class PostController extends Controller
                 $post->image = $name;
             }
         }
-        $post->desc = $request->description;
+        $post->description = $request->description;
         $post->author = $request->author;
         $post->save();
         return response()->json([
             'success' => true,
             'name' => $request->name,
             'category_id' => $request->category,
-            'desc' => $request->description,
+            'description' => $request->description,
             'author' => $request->author
         ]);
     }
 
     public function update(Request $request, $id)
     {
-        $post = Post::findOrFail($id);
-        $post->category_id = $request->category;
-        $post->name = $request->name;
+        $post = Post::find($id);
+        if (!empty($request->category)) {
+            $post->category_id = $request->category;
+        }
+        if (!empty($request->name)) {
+            $post->name = $request->name;
+        }
+
         //image insert
         if (!empty($request->image)) {
             if ($request->hasFile('image')) {
@@ -71,25 +78,41 @@ class PostController extends Controller
                 $post->image = $name;
             }
         }
-        $post->desc = $request->description;
-        $post->author = $request->author;
-        $post->update();
-        return response()->json([
-            'success' => true,
-            'name' => $post->name,
-            'category_id' => $post->category_id,
-            'desc' => $post->desc,
-            'author' => $post->author
-        ]);
+        if (!empty($request->description)) {
+            $post->description = $request->description;
+        }
+        if (!empty($request->author)) {
+            $post->author = $request->author;
+        }
+        $post->save();
+        if (!empty($post)) {
+            return response()->json([
+                'success' => true,
+                'name' => $post->name,
+                'category_id' => $post->category_id,
+                'description' => $post->description,
+                'author' => $post->author
+            ]);
+        } else{
+            return response()->json([
+                'error' => 'Record does not found 400,400'
+            ]);
+        }
     }
 
     public function destoryPosts($id)
     {
         $post = Post::findOrFail($id);
         $post->delete();
-        return response()->json([
-            'success' => true
-        ]);
+        if (!empty($post)) {
+            return response()->json([
+                'success' => true
+            ]);
+        } else {
+            return response()->json([
+                'error' => 'Record does not found 400,400'
+            ]);
+        }
     }
 
 }

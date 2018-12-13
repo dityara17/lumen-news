@@ -17,7 +17,7 @@ class TablePosts extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('image')->nullable();
-            $table->text('desc');
+            $table->text('description');
             $table->integer('author');
             $table->timestamps();
         });
