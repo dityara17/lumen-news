@@ -24,6 +24,6 @@ $router->get('get-category','CategoryController@getAllCategories');
 
 $router->get('get-post','PostController@getPosts');
 $router->get('get-post/{id}','PostController@getPost');
-$router->get('delete-post/{id}','PostController@destoryPosts');
+$router->delete('delete-post/{id}','PostController@destoryPosts');
 $router->post('insert-post','PostController@store');
-$router->post('edit-post/{id}','PostController@update');
+$router->put('edit-post/{id}','PostController@update');
