@@ -23,6 +23,7 @@ $router->get('get-category','CategoryController@getAllCategories');
 //post
 
 $router->get('get-post','PostController@getPosts');
+$router->get('get-post/author/{name}','PostController@getPostByAuthor');
 $router->get('get-post/{id}','PostController@getPost');
 $router->delete('delete-post/{id}','PostController@destoryPosts');
 $router->post('insert-post','PostController@store');

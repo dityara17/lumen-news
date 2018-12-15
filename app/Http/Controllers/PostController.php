@@ -26,6 +26,10 @@ class PostController extends Controller
         return Post::findOrFail($id);
     }
 
+    public function getPostByAuthor($name){
+        return Post::where('author', $name)->get();
+    }
+
 
     public function store(Request $request)
     {
